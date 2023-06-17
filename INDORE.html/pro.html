@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>To-Do List</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      
+      form label {
+        margin-right: 8px;
+      }
+      
+      form input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+      }
+      
+      form button {
+        padding: 8px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      
+      li label {
+        flex: 1;
+        margin-left: 8px;
+        text-decoration: none;
+      }
+      
+      li button {
+        margin-left: 8px;
+        padding: 8px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      li input[type="checkbox"] {
+        margin-right: 8px;
+        cursor: pointer;
+      }
+      
+      li.completed label {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>To-Do List</h1>
+      <form id="add-task-form">
+        <label for="task-name">Task name:</label>
+        <input type="text" id="task-name" name="task-name" required>
+        <button type="submit">Add task</button>
+      </form>
+      <ul id="task-list"></ul>
+    </div>
+    <script>
+      // Initialize task list
+      var tasks = [];
+      var taskList = document.getElementById("task-list");
+      
+      // Add task to list
+      function addTask(taskName) {
+        var task = { name: taskName, completed: false };
+        tasks.push(task);
+        renderTasks();
+      }
+      
+      // Remove task from list
+      function removeTask(index) {
+        tasks.splice(index, 1);
+        renderTasks();
+      }
+      
+      // Mark task as completed
+      function markTaskCompleted(index) {
+        tasks[index].completed = true;
+        renderTasks();
+      }
+      
+      // Render task list
+      function renderTasks() {
+        taskList.innerHTML = "";
+        for (var i = 0; i < tasks.length; i++) {
+          var task = tasks[i];
+          var checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = task.completed;
+          checkbox.onclick = function(index) {
+            return function() {
+              markTaskCompleted(index);
+            }
+          }(i);
+          var label = document.createElement("label");
+          label.innerHTML = task.name;
+          var removeButton = document.createElement("button");
+          removeButton.innerHTML = "
